@@ -1,3 +1,5 @@
+pub mod bible;
+
 use eframe::egui;
 
 fn main() -> Result<(), eframe::Error> 

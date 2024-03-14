@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 eframe = "0.26.2"
+markdown = "1.0.0-alpha.16"
