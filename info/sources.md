@@ -1,7 +1,7 @@
 # Sources:
 ### Bible:
 - [KJV Bible](https://github.com/arleym/kjv-markdown)
-- [Strongs Condordance](https://github.com/openscriptures/strongs)
+- [Strong's Concordance](https://github.com/openscriptures/strongs)
 - [Browns Drivers Briggs Concordance](https://github.com/eliranwong/unabridged-BDB-Hebrew-lexicon)
 - [Various Data CSVs](https://github.com/gusheng/MetaV)
 
