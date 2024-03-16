@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use eframe::egui::{self, ScrollArea};
+use eframe::egui::{self, Label, ScrollArea};
 
 use super::{Bible, Chapter};
 
@@ -22,7 +22,7 @@ impl BiblePanel
         }
     }
 
-    pub fn update(&mut self, ui: &mut egui::Ui)
+    pub fn ui(&mut self, ui: &mut egui::Ui)
     {
         egui::Grid::new("book_selector").show(ui, |ui| {
             let book_label = &self.bible.books[self.book_index as usize].name;
@@ -57,7 +57,8 @@ impl BiblePanel
             {
                 egui::Grid::new(v.number).show(ui, |ui| {
                     ui.label(v.number.to_string());
-                    ui.label(&v.text);
+                    let text = Label::new(&v.text).wrap(true);
+                    ui.add(text);
                 });
             }
         });

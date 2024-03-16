@@ -45,7 +45,7 @@ impl eframe::App for MyEguiApp
     fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) 
     {
         egui::CentralPanel::default().show(ctx, |ui| {
-           self.panel.update(ui)
+           self.panel.ui(ui)
         });
     }
 }
