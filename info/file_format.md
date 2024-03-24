@@ -1,12 +1,12 @@
 # File Format:
-## Requirments:
+## Requirements:
 - Easy and fast to parse
 - Supports
   - Bible Text
-  - Hilights
+  - Highlights
   - Notes
   - Images
-- Simmilar to existing formats
+- Similar to existing formats
 
 ## Possible Implementations:
 ### Json:
@@ -24,9 +24,9 @@
     },
     // ...
   ],
-  "hilighters": [
+  "highlighters": [
     {
-      "id": "hilighter_id",
+      "id": "highlighter_id",
       "color": "#FFFFFF", // Color hex
       "notes": "text"
     }
@@ -52,12 +52,12 @@ Cross-Ref:
   "text": "some markdown text"
 }
 ```
-Hilight:
+Highlight:
 ```json
 {
-  "type": "hilight",
+  "type": "highlight",
   "index": "Genesis:0:0:0-5", // word index of the bible
-  "id": "hilight_id"
+  "id": "highlight_id"
 }
 ```
 **Bible**
@@ -69,7 +69,7 @@ Hilight:
   "books": [
     {
       "name": "Genesis",
-      "testiment": "old",
+      "testament": "old",
       "chapters": [
         {
           { // Chapter 1
@@ -107,7 +107,7 @@ Hilight:
 ```
 
 **Notes**
-- All markdown texts can have images embedid into them
+- All markdown texts can have images embedded into them
 - All basic text entries support markdown syntax
 - You cannot have a word range between different books
-- You can have a crossref between different books
+- You can have a cross-ref between different books

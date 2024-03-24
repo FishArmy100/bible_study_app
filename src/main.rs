@@ -1,8 +1,10 @@
 pub mod bible;
+pub mod gui;
 
 use std::sync::Arc;
 
-use bible::view::BiblePanel;
+use bible::parsing::bible_from_md;
+use gui::BiblePanel;
 use eframe::egui;
 
 use crate::bible::Bible;
@@ -31,7 +33,7 @@ impl MyEguiApp
 
         cc.egui_ctx.set_visuals(egui::Visuals::dark());
 
-        let bible = Arc::new(Bible::from_md(include_str!("../assets/test_genesis_kjv.md")).unwrap());
+        let bible = Arc::new(bible_from_md(include_str!("../assets/genesis_kjv.md")).unwrap());
         Self 
         {
             bible: bible.clone(),

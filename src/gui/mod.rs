@@ -1,7 +1,7 @@
 use std::sync::Arc;
 use eframe::egui::{self, Label, ScrollArea};
 
-use super::{Bible, Chapter};
+use crate::bible::{Bible, Chapter};
 
 pub struct BiblePanel
 {
@@ -55,7 +55,7 @@ impl BiblePanel
         ScrollArea::vertical().id_source("verses_area").show(ui, |ui| {
             for v in &self.chapter().verses
             {
-                egui::Grid::new(v.number).show(ui, |ui| {
+                egui::Grid::new(v.number).max_col_width(ui.available_width() - 50.0).show(ui, |ui| {
                     ui.label(v.number.to_string());
                     let text = Label::new(&v.text).wrap(true);
                     ui.add(text);

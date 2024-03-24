@@ -4,7 +4,8 @@
         "eframe",
         "egui",
         "mdast",
-        "rsplit"
+        "rsplit",
+        "strongs"
     ],
     "rust-analyzer.linkedProjects": [
         ".\\Cargo.toml",
