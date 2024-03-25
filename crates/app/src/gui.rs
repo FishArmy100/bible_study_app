@@ -1,7 +1,7 @@
 use std::sync::Arc;
 use eframe::egui::{self, Label, ScrollArea};
 
-use crate::bible::{Bible, Chapter};
+use bible_file_format::{Bible, Chapter};
 
 pub struct BiblePanel
 {
@@ -38,7 +38,7 @@ impl BiblePanel
                 });
 
             let chapter = self.chapter();
-            let chapter_label = format!("Chapter {}", chapter.number);
+            let chapter_label = format!("Chapter {}", self.chapter_index + 1);
             egui::ComboBox::from_id_source("chapter_selector")
                 .selected_text(chapter_label)
                 .show_ui(ui, |ui| {
@@ -53,10 +53,12 @@ impl BiblePanel
         ui.separator();
 
         ScrollArea::vertical().id_source("verses_area").show(ui, |ui| {
-            for v in &self.chapter().verses
+            let verses = &self.chapter().verses;
+            for i in 0..verses.len()
             {
-                egui::Grid::new(v.number).max_col_width(ui.available_width() - 50.0).show(ui, |ui| {
-                    ui.label(v.number.to_string());
+                let v = &verses[i];
+                egui::Grid::new(i).max_col_width(ui.available_width() - 50.0).show(ui, |ui| {
+                    ui.label((i + 1).to_string());
                     let text = Label::new(&v.text).wrap(true);
                     ui.add(text);
                 });

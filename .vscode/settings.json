@@ -4,6 +4,7 @@
         "eframe",
         "egui",
         "mdast",
+        "miniz",
         "rsplit",
         "strongs"
     ],
