@@ -36,8 +36,7 @@ impl BiblePanel
                         index += 1;
                     }
                 });
-
-            let chapter = self.chapter();
+                
             let chapter_label = format!("Chapter {}", self.chapter_index + 1);
             egui::ComboBox::from_id_source("chapter_selector")
                 .selected_text(chapter_label)
