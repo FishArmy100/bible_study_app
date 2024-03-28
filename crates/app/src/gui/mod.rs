@@ -1,18 +1,18 @@
 use std::sync::Arc;
-use eframe::egui::{self, Label, ScrollArea};
+use eframe::egui::{self, Button, Label, ScrollArea, Sense};
 
-use super::{Bible, Chapter};
+use bible_file_format::bible::{BibleSave, ChapterSave};
 
 pub struct BiblePanel
 {
-    bible: Arc<Bible>,
+    bible: Arc<BibleSave>,
     book_index: u32,
     chapter_index: u32,
 }
 
 impl BiblePanel
 {
-    pub fn new(bible: Arc<Bible>) -> Self 
+    pub fn new(bible: Arc<BibleSave>) -> Self 
     {
         Self 
         {
@@ -24,7 +24,8 @@ impl BiblePanel
 
     pub fn ui(&mut self, ui: &mut egui::Ui)
     {
-        egui::Grid::new("book_selector").show(ui, |ui| {
+        egui::Grid::new("selector").show(ui, |ui| {
+            let old = self.book_index;
             let book_label = &self.bible.books[self.book_index as usize].name;
             egui::ComboBox::from_id_source("book_selector")
                 .selected_text(book_label)
@@ -37,8 +38,9 @@ impl BiblePanel
                     }
                 });
 
-            let chapter = self.chapter();
-            let chapter_label = format!("Chapter {}", chapter.number);
+            if old != self.book_index { self.chapter_index = 0 }
+            
+            let chapter_label = format!("Chapter {}", self.chapter_index + 1);
             egui::ComboBox::from_id_source("chapter_selector")
                 .selected_text(chapter_label)
                 .show_ui(ui, |ui| {
@@ -53,18 +55,23 @@ impl BiblePanel
         ui.separator();
 
         ScrollArea::vertical().id_source("verses_area").show(ui, |ui| {
-            for v in &self.chapter().verses
+            let verses = &self.chapter().verses;
+            for i in 0..verses.len()
             {
-                egui::Grid::new(v.number).show(ui, |ui| {
-                    ui.label(v.number.to_string());
-                    let text = Label::new(&v.text).wrap(true);
-                    ui.add(text);
+                let v = &verses[i];
+                egui::Grid::new(i).max_col_width(ui.available_width() - 50.0).show(ui, |ui| {
+                    
+                    let verse_number = Label::new((i + 1).to_string()).selectable(false);
+                    ui.add(verse_number);
+
+                    let verse_text = Label::new(&v.text).wrap(true).sense(Sense::click());
+                    ui.add(verse_text);
                 });
             }
         });
     }
 
-    fn chapter(&self) -> &Chapter
+    fn chapter(&self) -> &ChapterSave
     {
         &self.bible.books[self.book_index as usize].chapters[self.chapter_index as usize]
     }
