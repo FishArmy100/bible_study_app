@@ -1,6 +1,6 @@
 use markdown::{mdast::Node, unist::Position};
 
-use bible_file_format::{Bible, Book, Chapter, Verse};
+use bible_file_format::bible::{BibleSave, BookSave, ChapterSave, VerseSave};
 
 pub enum MdTestament
 {
@@ -27,7 +27,7 @@ pub struct MdBookFile
     pub testament: MdTestament,
 }
 
-pub fn bible_from_md(files: &[MdBookFile], name: String) -> Result<Bible, String>
+pub fn bible_from_md(files: &[MdBookFile], name: String) -> Result<BibleSave, String>
 {
     let mut books = vec![];
     for file in files
@@ -40,7 +40,7 @@ pub fn bible_from_md(files: &[MdBookFile], name: String) -> Result<Bible, String
         }
     };
 
-    Ok(Bible {
+    Ok(BibleSave {
         name,
         description: None,
         copyright: None,
@@ -48,7 +48,7 @@ pub fn bible_from_md(files: &[MdBookFile], name: String) -> Result<Bible, String
     })
 }
 
-fn parse_book(ast: &Vec<Node>, testament: String, debug_file_path: &str) -> Result<Book, String>
+fn parse_book(ast: &Vec<Node>, testament: String, debug_file_path: &str) -> Result<BookSave, String>
 {
     let Some(Node::Heading(h)) = ast.first() else { return Err(format_error_message("Expected a book heading", &debug_file_path, None)); };
     let Some(Node::Text(book_name)) = h.children.first() else { return Err(format_error_message("Expected a book name", &debug_file_path, h.position.clone())); };
@@ -69,14 +69,14 @@ fn parse_book(ast: &Vec<Node>, testament: String, debug_file_path: &str) -> Resu
         }
     };
 
-    Ok(Book {
+    Ok(BookSave {
         name: book_name.value.clone(),
         testament,
         chapters,
     })
 }
 
-fn parse_chapter(ast: &Vec<Node>, i: &mut usize, debug_file_path: &str) -> Result<Option<Chapter>, String>
+fn parse_chapter(ast: &Vec<Node>, i: &mut usize, debug_file_path: &str) -> Result<Option<ChapterSave>, String>
 {
     if *i >= ast.len() { return Ok(None) }
 
@@ -94,14 +94,14 @@ fn parse_chapter(ast: &Vec<Node>, i: &mut usize, debug_file_path: &str) -> Resul
 
     match verses
     {
-        Ok(vs) => Ok(Some(Chapter {
+        Ok(vs) => Ok(Some(ChapterSave {
             verses: vs
         })),
         Err(err) => Err(err)
     }
 }
 
-fn parse_verses(ast: &Vec<Node>, i: &mut usize, debug_file_path: &str) -> Result<Vec<Verse>, String>
+fn parse_verses(ast: &Vec<Node>, i: &mut usize, debug_file_path: &str) -> Result<Vec<VerseSave>, String>
 {
     let mut verses = vec![];
     while let Some(Node::Paragraph(p)) = ast.get(*i)
@@ -110,7 +110,7 @@ fn parse_verses(ast: &Vec<Node>, i: &mut usize, debug_file_path: &str) -> Result
         let Some((n, v)) = t.value.split_once(char::is_whitespace) else { return Err(format_error_message("Expected a verse number and text", debug_file_path, t.position.clone())) };
         let Ok(_): Result<u32, _> = n.parse() else { return Err(format_error_message("Expected a verse number", debug_file_path, t.position.clone())) };
 
-        verses.push(Verse {
+        verses.push(VerseSave {
             text: String::from(v)
         });
 

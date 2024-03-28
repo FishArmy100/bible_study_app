@@ -2,7 +2,7 @@ pub mod md_parsing;
 
 use std::path::Path;
 
-use bible_file_format::{CompressionLevel, JsonMode};
+use bible_file_format::{CompressionLevel, JsonMode, JsonSerde};
 use clap::{Args, Parser, Subcommand};
 use md_parsing::{bible_from_md, MdBookFile, MdTestament};
 
