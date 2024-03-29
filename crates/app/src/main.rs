@@ -1,9 +1,10 @@
 pub mod gui;
+pub mod data;
 use std::sync::Arc;
 
-use bible_file_format::{bible::BibleSave, JsonSerde};
-use gui::BiblePanel;
-use eframe::egui;
+use bible_file_format::{bible::BibleSave, notes::{AnnotationSave, AnnotationType, BibleAnnotationsSave}, JsonSerde, TextRange, Uuid};
+use gui::{chapter_ui::{ChapterIndex, VerseUi}, BiblePanel};
+use eframe::egui::{self, Grid, Ui};
 
 fn main() -> Result<(), eframe::Error> 
 {
@@ -32,10 +33,12 @@ impl MyEguiApp
 
         let data = include_bytes!("../../../assets/test_bible.cjb");
         let bible = Arc::new(BibleSave::from_compressed_json(data).unwrap());
+        let annotations = Arc::new(get_test_annotations());
+
         Self 
         {
             bible: bible.clone(),
-            panel: BiblePanel::new(bible),
+            panel: BiblePanel::new(bible, annotations),
         }
     }
 }
@@ -46,6 +49,66 @@ impl eframe::App for MyEguiApp
     {
         egui::CentralPanel::default().show(ctx, |ui| {
            self.panel.ui(ui);
+           // test_ui(ui);
         });
     }
+}
+
+fn get_test_annotations() -> BibleAnnotationsSave
+{
+    let book_index = 18;
+        let chapter_index = 117; // psalm 118
+        let verse_index = 23; // verse 24
+        let word_index = 1; // "is"
+
+        let chapter = ChapterIndex {
+            book_index,
+            chapter_index,
+        };
+
+        let notes = vec![AnnotationSave {
+            id: Uuid::new_v4(),
+            annotation_type: AnnotationType::Note { 
+                text: String::from("My test message"), 
+                range: TextRange::word(book_index, chapter_index, verse_index as u16, word_index) 
+            }
+        }];
+
+    BibleAnnotationsSave
+    {
+        name: "Test Save".into(),
+        bible_name: "kjv".into(),
+        description: "This is a test".into(),
+        notes,
+        highlighters: vec![]
+    }
+}
+
+fn test_ui(ui: &mut Ui)
+{
+    let text = "This is the day the LORD has made";
+
+    let book_index = 18;
+    let chapter_index = 117; // psalm 118
+    let verse_index = 23; // verse 24
+    let word_index = 1; // "is"
+
+    let chapter = ChapterIndex {
+        book_index,
+        chapter_index,
+    };
+
+    let annotations = &[AnnotationSave {
+        id: Uuid::new_v4(),
+        annotation_type: AnnotationType::Note { 
+            text: String::from("My test message"), 
+            range: TextRange::word(book_index, chapter_index, verse_index as u16, word_index) 
+        }
+    }];
+
+    let verse_ui = VerseUi::new(text, verse_index, chapter, annotations);
+
+    Grid::new("test_grid").num_columns(2).show(ui, |ui| {
+        verse_ui.ui(ui);
+    });
 }

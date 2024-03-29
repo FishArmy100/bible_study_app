@@ -1,10 +1,11 @@
 use bible::ChapterSave;
 use miniz_oxide::{deflate::compress_to_vec, inflate::decompress_to_vec};
 
+pub use uuid::Uuid;
+
 pub mod notes;
 pub mod bible;
 
-/// **NOTE: all values are i**
 #[repr(C)]
 #[derive(Debug, Clone, Copy, serde::Serialize, serde::Deserialize)]
 pub struct TextRange
@@ -15,6 +16,42 @@ pub struct TextRange
     pub start_word_index: u16,
     pub end_verse_index: u16,
     pub end_word_index: u16,
+}
+
+impl TextRange
+{
+    pub fn has_word(&self, index: WordIndex) -> bool
+    {
+        if self.book_index != index.book_index { return false; }
+        if self.chapter_index != index.chapter_index { return false; }
+
+        if self.start_verse_index > index.verse_index { return false; }
+        if self.end_verse_index < index.verse_index { return false; }
+
+        if self.start_verse_index == index.verse_index &&
+           self.start_word_index > index.word_index 
+        { 
+            return false; 
+        }
+
+        if self.end_verse_index == index.verse_index &&
+           self.end_word_index < index.word_index 
+        { 
+            return false; 
+        }
+
+        true
+    }
+}
+
+#[repr(C)]
+#[derive(Debug, Clone, Copy, serde::Serialize, serde::Deserialize)]
+pub struct WordIndex 
+{
+    pub book_index: u8,
+    pub chapter_index: u8,
+    pub verse_index: u16,
+    pub word_index: u16,
 }
 
 impl TextRange
