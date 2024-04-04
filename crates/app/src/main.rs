@@ -3,7 +3,8 @@ pub mod data;
 use std::sync::Arc;
 
 use bible_file_format::{bible::BibleSave, notes::{AnnotationSave, AnnotationType, BibleAnnotationsSave}, JsonSerde, TextRange, Uuid};
-use gui::{chapter_ui::{ChapterIndex, VerseUi}, BiblePanel};
+use data::ChapterIndex;
+use gui::{chapter_ui::VerseUi, BiblePanel};
 use eframe::egui::{self, Grid, Ui};
 
 fn main() -> Result<(), eframe::Error> 
@@ -61,11 +62,6 @@ fn get_test_annotations() -> BibleAnnotationsSave
         let verse_index = 23; // verse 24
         let word_index = 1; // "is"
 
-        let chapter = ChapterIndex {
-            book_index,
-            chapter_index,
-        };
-
         let notes = vec![AnnotationSave {
             id: Uuid::new_v4(),
             annotation_type: AnnotationType::Note { 
@@ -82,33 +78,4 @@ fn get_test_annotations() -> BibleAnnotationsSave
         notes,
         highlighters: vec![]
     }
-}
-
-fn test_ui(ui: &mut Ui)
-{
-    let text = "This is the day the LORD has made";
-
-    let book_index = 18;
-    let chapter_index = 117; // psalm 118
-    let verse_index = 23; // verse 24
-    let word_index = 1; // "is"
-
-    let chapter = ChapterIndex {
-        book_index,
-        chapter_index,
-    };
-
-    let annotations = &[AnnotationSave {
-        id: Uuid::new_v4(),
-        annotation_type: AnnotationType::Note { 
-            text: String::from("My test message"), 
-            range: TextRange::word(book_index, chapter_index, verse_index as u16, word_index) 
-        }
-    }];
-
-    let verse_ui = VerseUi::new(text, verse_index, chapter, annotations);
-
-    Grid::new("test_grid").num_columns(2).show(ui, |ui| {
-        verse_ui.ui(ui);
-    });
 }

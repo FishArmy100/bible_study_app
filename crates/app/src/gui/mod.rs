@@ -1,16 +1,19 @@
 pub mod chapter_ui;
+pub mod note_ui;
 
 use std::sync::Arc;
 use eframe::egui::{self, Button, Label, ScrollArea, Sense};
 
 use bible_file_format::{bible::{BibleSave, ChapterSave}, notes::{AnnotationSave, BibleAnnotationsSave}};
 
-use self::chapter_ui::{ChapterIndex, ChapterUi};
+use crate::data::ChapterIndex;
+
+use self::chapter_ui::ChapterUi;
 
 pub struct BiblePanel
 {
     bible: Arc<BibleSave>,
-    chapter_index: ChapterIndex,
+    chapter_index: ChapterIndex, 
     chapter_ui: ChapterUi,
     annotations: Arc<BibleAnnotationsSave>
 }

@@ -1,12 +1,7 @@
 use bible_file_format::{bible::ChapterSave, notes::AnnotationSave, Uuid, WordIndex};
 use eframe::egui::{Grid, Label, RichText, ScrollArea, Sense, Ui};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct ChapterIndex 
-{
-    pub book_index: u8,
-    pub chapter_index: u8,
-}
+use crate::data::ChapterIndex;
 
 pub struct ChapterUi 
 {
