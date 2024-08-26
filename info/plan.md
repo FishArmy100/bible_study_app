@@ -1,7 +1,10 @@
 # Development Plan
 
 ### Version 0.1.0
-- [ ] HTML + CSS rendering
-- [ ] Genesis Chapter 1
+- [x] HTML + CSS rendering
+- [ ] Entire KJV bible
   - [ ] Verse Numbers
   - [ ] Chapter heading
+- [ ] Chapter Selection
+  - [ ] Chapter/Verse search bar
+  - [ ] Chapter picker
