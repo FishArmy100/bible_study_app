@@ -1,7 +1,5 @@
-mod data;
 mod html;
-
-use data::chapter_from_text;
+use bible_data::chapter_from_text;
 use web_view::*;
 
 const GEN_CH1: &str = "In the beginning God created the heaven and the earth.

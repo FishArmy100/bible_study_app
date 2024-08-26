@@ -1,4 +1,4 @@
-use crate::data::*;
+use bible_data::*;
 use html_builder::*;
 use std::fmt::{Write, Error};
 
@@ -12,7 +12,7 @@ pub fn build_chapter_html(chapter: &Chapter, book_name: &str, chapter_number: u3
 
     let mut head = html.head();
     write!(head.title(), "Bible App")?;
-    head.style().write_str(include_str!("../assets/page.css"))?;
+    head.style().write_str(include_str!("../../../assets/page.css"))?;
 
     let mut body = html.body();
     {
