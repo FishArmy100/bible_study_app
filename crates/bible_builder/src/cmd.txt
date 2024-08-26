@@ -1,1 +1,0 @@
-cargo run -- -o ../../target/debug/bible_test.json -n kjv md ../../assets/markdown

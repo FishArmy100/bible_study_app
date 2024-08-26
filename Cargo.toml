@@ -1,3 +1,7 @@
-[workspace]
-members = [ "crates/app", "crates/bible_file_format", "crates/bible_builder" ]
-resolver = "2"
+[package]
+name = "bible_study_app"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+web-view = "0.7.3"
