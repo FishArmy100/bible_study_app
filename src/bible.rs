@@ -25,7 +25,6 @@ pub struct Chapter
 pub struct Book 
 {
     pub name: String,
-    pub desc: String,
     pub chapters: Vec<Chapter>,
 }
 
@@ -33,5 +32,6 @@ pub struct Book
 pub struct Bible
 {
     pub name: String,
+    pub desc: String,
     pub books: Vec<Book>,
 }
