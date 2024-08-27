@@ -1,3 +1,12 @@
-[workspace]
-members = ["crates/app", "crates/bible_data"]
-resolver = "2"
+[package]
+name = "bible_study_app"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+html-builder = "0.5.1"
+itertools = "0.13.0"
+regex = "1.10.6"
+serde = { version = "1.0.209", features = ["derive", "serde_derive"] }
+serde_json = "1.0.127"
+web-view = "0.7.3"

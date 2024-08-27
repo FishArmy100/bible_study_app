@@ -1,5 +1,9 @@
 mod html;
-use bible_data::chapter_from_text;
+mod bible;
+mod parsing;
+
+use itertools::Itertools;
+use parsing::parse_bible;
 use web_view::*;
 
 const GEN_CH1: &str = "In the beginning God created the heaven and the earth.
@@ -37,11 +41,16 @@ And God saw every thing that he had made, and, behold, [it was] very good. And t
 fn main() {
     // let html_content = include_str!("../assets/page.html");
 
-    let html_content = html::build_chapter_html(&chapter_from_text(GEN_CH1), "Genesis", 1).unwrap();
+    // let html_content = html::build_chapter_html(&chapter_from_text(GEN_CH1), "Genesis", 1).unwrap();
+
+    let text = include_str!("../assets/kjv.txt");
+    let lines = text.split('\n').skip(3).take(3).join("\n");
+
+    parse_bible(&lines);
 	
     web_view::builder()
         .title("Bible App")
-        .content(Content::Html(html_content))
+        .content(Content::Html("<html><body>Hello World!</body></html>"))
         .size(320, 480)
         .resizable(true)
         .debug(true)
