@@ -35,3 +35,11 @@ pub struct Bible
     pub desc: String,
     pub books: Vec<Book>,
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ChapterRef
+{
+    pub book: String,
+    pub chapter: u32,
+}

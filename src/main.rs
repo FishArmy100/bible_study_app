@@ -1,17 +1,26 @@
 mod html;
 mod bible;
 mod parsing;
+pub mod bible_view;
 
-use itertools::Itertools;
+use bible::ChapterRef;
 use parsing::parse_bible;
+use serde::{Deserialize, Serialize};
 use web_view::*;
 
-fn main() {
-    // let html_content = include_str!("../assets/page.html");
+#[derive(Serialize, Deserialize)]
+#[serde(tag = "cmd", rename_all = "camelCase")]
+pub enum Cmd 
+{
+    SelectChapter {
+        chapter: ChapterRef,
+    },
+    Test,
+}
 
-    
-    let data = parse_bible(include_str!("../assets/kjv.txt")).unwrap();
-    let html_content = html::build_chapter_html(&data.books[19].chapters[2], "Proverbs", 3).unwrap();
+fn main() {
+    let bible = parse_bible(include_str!("../assets/kjv.txt")).unwrap();
+    let html_content = bible_view::build_view_page(&bible).unwrap();
 
     web_view::builder()
         .title("Bible App")
@@ -20,7 +29,16 @@ fn main() {
         .resizable(true)
         .debug(true)
         .user_data(())
-        .invoke_handler(|_webview, _arg| Ok(()))
+        .invoke_handler(|_webview, arg| {
+            println!("{}", arg);
+            match serde_json::from_str::<Cmd>(arg).unwrap() 
+            {
+                Cmd::SelectChapter { chapter } => println!("Selected {} chapter {}", chapter.book, chapter.chapter),
+                Cmd::Test => println!("Ran testing command"),
+            }
+
+            Ok(())
+        })
         .run()
         .unwrap();
 }

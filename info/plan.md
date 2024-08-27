@@ -6,5 +6,4 @@
   - [ ] Verse Numbers
   - [ ] Chapter heading
 - [ ] Chapter Selection
-  - [ ] Chapter/Verse search bar
   - [ ] Chapter picker
